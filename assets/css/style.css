@@ -150,3 +150,61 @@ footer { display:flex; justify-content:space-between; width:min(1120px,88vw); ma
 .project-actions { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:16px; }
 .project-link { display:inline-flex; align-items:center; justify-content:center; padding:10px 14px; border:1px solid currentColor; border-radius:10px; text-decoration:none; font-weight:600; }
 .modal-project-image { width:100%; max-height:420px; object-fit:contain; border-radius:14px; margin:20px 0; }
+
+/* Project modal fix */
+body.modal-open { overflow: hidden; }
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal.is-open { display: flex; }
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 100%);
+  max-height: min(90vh, 900px);
+  overflow-y: auto;
+  border-radius: 18px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.modal-project-image {
+  display: block;
+  width: 100%;
+  max-height: 430px;
+  object-fit: contain;
+  border-radius: 14px;
+  margin: 20px 0;
+}
+
+.modal-section { margin-top: 22px; }
+.modal-section ul { padding-left: 20px; }
+.modal-section li { margin-bottom: 8px; }
+.modal-github-btn { display: inline-flex; margin-top: 24px; }
