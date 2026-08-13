@@ -140,3 +140,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
   $("#year").textContent = new Date().getFullYear();
 });
+
+/* Robust project modal handling */
+const projectModal = document.getElementById("projectModal");
+const modalBody = document.getElementById("modalBody");
+const modalClose = document.getElementById("modalClose");
+const modalBackdrop = projectModal ? projectModal.querySelector("[data-close-modal]") : null;
+
+function openProjectModal(index) {
+  if (!projectModal || !modalBody || !projects[index]) return;
+  const p = projects[index];
+
+  modalBody.innerHTML = `
+    <p class="eyebrow">${p.type || p.category}</p>
+    <h2 id="modalTitle">${p.title}</h2>
+    <p>${p.description}</p>
+    ${p.image ? `<img class="modal-project-image" src="${p.image}" alt="${p.title} dashboard preview">` : ""}
+    <div class="detail-grid">
+      <div class="detail-box"><strong>Tools</strong><span>${p.tools.join(" • ")}</span></div>
+      <div class="detail-box"><strong>Category</strong><span>${p.category}</span></div>
+    </div>
+    <div class="modal-section">
+      <h3>Problem</h3>
+      <p>${p.problem}</p>
+    </div>
+    <div class="modal-section">
+      <h3>Process</h3>
+      <ul>${p.process.map(item => `<li>${item}</li>`).join("")}</ul>
+    </div>
+    <div class="modal-section">
+      <h3>Key insights</h3>
+      <ul>${p.insights.map(item => `<li>${item}</li>`).join("")}</ul>
+    </div>
+    <div class="modal-section">
+      <h3>Outcome</h3>
+      <p>${p.outcome}</p>
+    </div>
+    <a class="btn primary modal-github-btn" href="${p.github}" target="_blank" rel="noopener">Open GitHub Repository ↗</a>
+  `;
+
+  projectModal.classList.add("is-open");
+  projectModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeProjectModal() {
+  if (!projectModal) return;
+  projectModal.classList.remove("is-open");
+  projectModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
+document.addEventListener("click", (event) => {
+  const trigger = event.target.closest("[data-project]");
+  if (trigger) {
+    event.preventDefault();
+    openProjectModal(Number(trigger.dataset.project));
+  }
+});
+
+modalClose?.addEventListener("click", closeProjectModal);
+modalBackdrop?.addEventListener("click", closeProjectModal);
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && projectModal?.classList.contains("is-open")) {
+    closeProjectModal();
+  }
+});
+
+projectModal?.addEventListener("click", (event) => {
+  if (event.target === projectModal) closeProjectModal();
+});
